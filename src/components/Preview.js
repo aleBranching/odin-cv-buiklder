@@ -1,4 +1,5 @@
 import { Component } from "react";
+import "../style/Preview.css";
 
 export default class Preview extends Component {
   constructor(props) {
@@ -6,6 +7,6 @@ export default class Preview extends Component {
   }
 
   render() {
-    return <div>asd</div>;
+    return <h1 className="Preview">CV Preview</h1>;
   }
 }
