@@ -46,14 +46,14 @@ class App extends Component {
 
   // getElementsFromKeyElementList = (list) => list.map((anItem) => anItem.id);
 
-  setPersonalDetailsState = (field, value) => {
+  changePersonalDetailsState = (field, value) => {
     let copy = [...this.state.masterDetails.personalDetails];
 
     copy[field] = value;
     this.setState({ masterDetails: { PersonalDetails: copy } });
   };
 
-  setEducationState = (id, field, value) => {
+  changeEducationState = (id, field, value) => {
     let index = this.findindexInlistByID(
       this.state.masterDetails.education,
       id
@@ -65,7 +65,7 @@ class App extends Component {
 
     this.setState({ masterDetails: { education: copy } });
   };
-  setWorkExperienceState = (id, field, value) => {
+  changeWorkExperienceState = (id, field, value) => {
     let index = this.findindexInlistByID(
       this.state.masterDetails.workExperience,
       id
@@ -83,10 +83,100 @@ class App extends Component {
 
     copy.push({
       key: uniqid(),
-      educationTitle: "University of York",
-      startDate: "2021-02-01",
-      finishDate: "2023-02-01",
-      additionalInfo: "Got an attendance award",
+      educationTitle: "",
+      startDate: "",
+      finishDate: "",
+      additionalInfo: "",
+    });
+
+    this.setState({
+      masterDetails: {
+        education: copy,
+      },
+    });
+  };
+
+  setNewWorkState = () => {
+    let copy = [...this.state.masterDetails.workExperience];
+
+    copy.push({
+      key: uniqid(),
+      workTitle: "",
+      startDate: "",
+      finishDate: "",
+      bulletPoint: [{ key: uniqid(), title: "" }],
+    });
+
+    this.setState({
+      masterDetails: {
+        workExperience: copy,
+      },
+    });
+  };
+
+  setNewBulletPoint = (parentID) => {
+    let copy = [...this.state.masterDetails.workExperience];
+
+    copy.bulletPoint.push({
+      key: uniqid(),
+      title: "",
+    });
+
+    this.setState({
+      masterDetails: {
+        workExperience: copy,
+      },
+    });
+  };
+
+  editBulletPoint = (parentID, bulletID, newValue) => {
+    let parentIndex = this.findindexInlistByID(
+      this.state.masterDetails.workExperience,
+      parentID
+    );
+
+    let bulletIndex = this.findindexInlistByID(
+      this.state.masterDetails.workExperience[parentIndex].bulletPoint,
+      bulletID
+    );
+
+    // let bulletKey= this.state.masterDetails.workExperience[parentIndex].bulletPoint[bulletIndex]
+
+    let copy = [...this.state.masterDetails.workExperience];
+
+    copy[parentIndex].bulletPoint.splice(bulletIndex, 1, {
+      key: bulletID,
+      title: newValue,
+    });
+
+    this.setState({
+      masterDetails: {
+        workExperience: copy,
+      },
+    });
+  };
+
+  deleteBulletPoint = (parentID, bulletID) => {
+    let parentIndex = this.findindexInlistByID(
+      this.state.masterDetails.workExperience,
+      parentID
+    );
+
+    let bulletIndex = this.findindexInlistByID(
+      this.state.masterDetails.workExperience[parentIndex].bulletPoint,
+      bulletID
+    );
+
+    // let bulletKey= this.state.masterDetails.workExperience[parentIndex].bulletPoint[bulletIndex]
+
+    let copy = [...this.state.masterDetails.workExperience];
+
+    copy[parentIndex].bulletPoint.splice(bulletIndex, 1);
+
+    this.setState({
+      masterDetails: {
+        workExperience: copy,
+      },
     });
   };
 
