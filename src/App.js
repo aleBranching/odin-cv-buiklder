@@ -132,18 +132,41 @@ class App extends Component {
     //   console.log("the modified", this.state)
     // );
   };
+  deleteAnEducation = (id) => {
+    this.setState((prevState) => {
+      return { education: prevState.education.filter((el) => el.key !== id) };
+    });
+  };
 
   changeWorkExperienceState = (id, field, value) => {
-    let index = this.findindexInlistByID(
-      this.state.masterDetails.workExperience,
-      id
+    let index = this.findindexInlistByID(this.state.workExperience, id);
+
+    // this.setState({ workExperience: copy }, () =>
+    //   console.log("checking state", this.state.workExperience)
+    // );
+
+    this.setState(
+      (prevState) => {
+        return {
+          workExperience: prevState.workExperience.map((el) =>
+            el.key === id ? Object.assign({}, el, { [field]: value }) : el
+          ),
+        };
+      },
+      () => console.log("checking the state", this.state.workExperience)
     );
-
-    let copy = [...this.state.masterDetails.workExperience];
-
-    copy = copy.splice(index, 1, { [field]: value });
-
-    this.setState({ masterDetails: { workExperience: copy } });
+  };
+  setNewWorkExperienceState = (callback) => {
+    let copy = JSON.parse(JSON.stringify(this.state.workExperience));
+    copy.push({
+      key: uniqid(),
+      workTitle: "",
+      startDate: "",
+      finishDate: "",
+      bulletPoint: [{ key: uniqid(), title: "" }],
+    });
+    console.log("the copy", copy);
+    this.setState({ workExperience: copy }, callback);
   };
 
   setNewEducationState = (callback) => {
@@ -248,6 +271,7 @@ class App extends Component {
     return (
       <div className="App">
         <CVEditor
+          deleteAnEducation={this.deleteAnEducation}
           masterDetails={this.state.masterDetails}
           personalDetails={this.state.personalDetails}
           educationDetails={this.state.education}
@@ -256,11 +280,13 @@ class App extends Component {
           changePersonalDetailsState={this.changePersonalDetailsState}
           changeEducationState={this.changeEducationState}
           changeWorkExperienceState={this.changeWorkExperienceState}
+          workExperience={this.state.workExperience}
           setNewEducationState={this.setNewEducationState}
           setNewWorkState={this.setNewWorkState}
           setNewBulletPoint={this.setNewBulletPoint}
           editBulletPoint={this.editBulletPoint}
           deleteBulletPoint={this.deleteBulletPoint}
+          setNewWorkExperienceState={this.setNewWorkExperienceState}
         ></CVEditor>
         <Preview></Preview>
       </div>

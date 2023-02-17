@@ -8,8 +8,15 @@ export default class ExtraWorkExperience extends Component {
   constructor(props) {
     super(props);
     let firstKey = uniqid();
+    let index = this.props.workExperienceDetails.findIndex(
+      (element) => element.key === this.props.id
+    );
+    console.log(this.props.workExperienceDetails);
     this.state = {
       bulletPoint: [{ key: firstKey, bullet: "First bullet Point" }],
+      workTitle: this.props.workExperienceDetails[index].workTitle,
+      startDate: this.props.workExperienceDetails[index].startDate,
+      finishDate: this.props.workExperienceDetails[index].finishDate,
     };
   }
 
@@ -76,6 +83,12 @@ export default class ExtraWorkExperience extends Component {
     // console.log(this.state.educations);
   };
 
+  handleChange = (field, event) => {
+    let { value } = event.target;
+    this.setState({ [field]: value });
+    this.props.changeWorkExperienceState(this.props.id, field, value);
+  };
+
   handleDelete = (id) => {
     console.log(id);
 
@@ -100,10 +113,25 @@ export default class ExtraWorkExperience extends Component {
       <React.Fragment>
         <form onSubmit={this.handleSubmit}>
           <h4>A Work Experience:</h4>
-          <input type="text" placeholder="Work Title"></input>
-          <input type="date" placeholder="Start year:"></input>
-          <input type="date" placeholder="Finish year:"></input>
-          <input type="text" placeholder="Additional Info:"></input>
+          <input
+            type="text"
+            placeholder="Work Title"
+            onChange={(e) => this.handleChange("workTitle", e)}
+            value={this.state.workTitle}
+          ></input>
+          <input
+            type="date"
+            placeholder="Start year:"
+            onChange={(e) => this.handleChange("startDate", e)}
+            value={this.state.startDate}
+          ></input>
+          <input
+            type="date"
+            placeholder="Finish year:"
+            onChange={(e) => this.handleChange("finishDate", e)}
+            value={this.state.finishDate}
+          ></input>
+          {/* <input type="text" placeholder="Additional Info:" value={this.state.}></input> */}
         </form>
         <h6>bullet points</h6>
         <ul>{this.renderList()}</ul>

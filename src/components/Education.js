@@ -64,6 +64,9 @@ export default class Education extends Component {
     this.setState({
       educations: copy,
     });
+
+    // change master state
+    this.props.deleteAnEducation(id);
   };
 
   render() {

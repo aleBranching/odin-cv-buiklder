@@ -18,6 +18,7 @@ export default class CVEditor extends Component {
           personalDetails={this.props.personalDetails}
         ></PersonalDetails>
         <Education
+          deleteAnEducation={this.props.deleteAnEducation}
           educationDetails={this.props.educationDetails}
           changeEducationState={this.props.changeEducationState}
           setNewEducationState={this.props.setNewEducationState}
@@ -26,7 +27,11 @@ export default class CVEditor extends Component {
             this.props.getElementsFromKeyElementList
           }
         ></Education>
-        <WorkExperience></WorkExperience>
+        <WorkExperience
+          setNewWorkExperienceState={this.props.setNewWorkExperienceState}
+          workExperienceDetails={this.props.workExperience}
+          changeWorkExperienceState={this.props.changeWorkExperienceState}
+        ></WorkExperience>
       </div>
     );
   }

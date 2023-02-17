@@ -6,8 +6,15 @@ export default class extraEducation extends Component {
     // this.state = {
     //   educationTitle: this.props.educationDetails[0].educationTitle,
     // };
+    let index = this.props.educationDetails.findIndex(
+      (element) => element.key === this.props.id
+    );
     this.state = {
-      dummyChange: true,
+      key: this.props.educationDetails[index].key,
+      educationTitle: this.props.educationDetails[index].educationTitle,
+      startDate: this.props.educationDetails[index].startDate,
+      finishDate: this.props.educationDetails[index].finishDate,
+      additionalInfo: this.props.educationDetails[index].additionalInfo,
     };
   }
 
@@ -22,6 +29,8 @@ export default class extraEducation extends Component {
     let value = e.target.value;
     console.log("happened", this.props.id);
     // console.log("education details", this.props.educationDetails);
+
+    this.setState({ [field]: value });
 
     this.props.changeEducationState(this.props.id, field, value);
   };
@@ -38,7 +47,7 @@ export default class extraEducation extends Component {
     // let test = "educationTitle";
 
     // console.log("return value", this.props.educationDetails[index][test]);
-    return this.props.educationDetails[index][field];
+    return this.state[field];
   };
 
   render() {
@@ -53,7 +62,7 @@ export default class extraEducation extends Component {
             type="text"
             data-field-type="educationTitle"
             onChange={this.handleChange}
-            value={this.props.educationDetails[0].educationTitle}
+            value={this.getValue("educationTitle")}
             placeholder="Education Title"
           ></input>
           <input

@@ -5,12 +5,15 @@ import ExtraWorkExperience from "./WorkExperienceComponents/ExtraWorkExperience"
 export default class WorkExperience extends Component {
   constructor(props) {
     super(props);
-    let firstKey = uniqid();
+    let firstKey = this.props.workExperienceDetails[0].key;
+
     this.state = {
       workExperiences: [
         <ExtraWorkExperience
           key={firstKey}
           id={firstKey}
+          workExperienceDetails={this.props.workExperienceDetails}
+          changeWorkExperienceState={this.props.changeWorkExperienceState}
           handleDelete={this.handleDelete}
         ></ExtraWorkExperience>,
       ],
@@ -19,17 +22,31 @@ export default class WorkExperience extends Component {
 
   handleAddExperience = () => {
     let copy = [...this.state.workExperiences];
-    let id = uniqid();
-
-    copy.push(
-      <ExtraWorkExperience
-        key={id}
-        id={id}
-        handleDelete={this.handleDelete}
-      ></ExtraWorkExperience>
-    );
-    this.setState({
-      workExperiences: copy,
+    // let id = uniqid();
+    this.props.setNewWorkExperienceState(() => {
+      let id =
+        this.props.workExperienceDetails[
+          this.props.workExperienceDetails.length - 1
+        ].key;
+      console.log(
+        "the work experience prop",
+        this.props.workExperienceDetails[
+          this.props.workExperienceDetails.length - 1
+        ]
+      );
+      console.log("the id", id);
+      copy.push(
+        <ExtraWorkExperience
+          key={id}
+          id={id}
+          changeWorkExperienceState={this.props.changeWorkExperienceState}
+          workExperienceDetails={this.props.workExperienceDetails}
+          handleDelete={this.handleDelete}
+        ></ExtraWorkExperience>
+      );
+      this.setState({
+        workExperiences: copy,
+      });
     });
   };
 
