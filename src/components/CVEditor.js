@@ -12,8 +12,15 @@ export default class CVEditor extends Component {
   render() {
     return (
       <div className="CVEditor">
-        <PersonalDetails></PersonalDetails>
+        <PersonalDetails
+          changePersonalDetailsState={this.props.changePersonalDetailsState}
+          masterDetails={this.props.masterDetails}
+          personalDetails={this.props.personalDetails}
+        ></PersonalDetails>
         <Education
+          educationDetails={this.props.educationDetails}
+          changeEducationState={this.props.changeEducationState}
+          setNewEducationState={this.props.setNewEducationState}
           findindexInlistByID={this.props.findindexInlistByID}
           getElementsFromKeyElementList={
             this.props.getElementsFromKeyElementList
