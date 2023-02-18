@@ -28,9 +28,13 @@ export default class CVEditor extends Component {
           }
         ></Education>
         <WorkExperience
+          deleteBulletPoint={this.props.deleteBulletPoint}
+          setNewBulletPoint={this.props.setNewBulletPoint}
           setNewWorkExperienceState={this.props.setNewWorkExperienceState}
           workExperienceDetails={this.props.workExperience}
           changeWorkExperienceState={this.props.changeWorkExperienceState}
+          deleteAWorkExperience={this.props.deleteAWorkExperience}
+          editBulletPoint={this.props.editBulletPoint}
         ></WorkExperience>
       </div>
     );

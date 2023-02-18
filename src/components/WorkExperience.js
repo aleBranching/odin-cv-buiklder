@@ -15,6 +15,9 @@ export default class WorkExperience extends Component {
           workExperienceDetails={this.props.workExperienceDetails}
           changeWorkExperienceState={this.props.changeWorkExperienceState}
           handleDelete={this.handleDelete}
+          setNewBulletPoint={this.props.setNewBulletPoint}
+          editBulletPoint={this.props.editBulletPoint}
+          deleteBulletPoint={this.deleteBulletPoint}
         ></ExtraWorkExperience>,
       ],
     };
@@ -42,6 +45,9 @@ export default class WorkExperience extends Component {
           changeWorkExperienceState={this.props.changeWorkExperienceState}
           workExperienceDetails={this.props.workExperienceDetails}
           handleDelete={this.handleDelete}
+          setNewBulletPoint={this.props.setNewBulletPoint}
+          editBulletPoint={this.props.editBulletPoint}
+          deleteBulletPoint={this.props.deleteBulletPoint}
         ></ExtraWorkExperience>
       );
       this.setState({
@@ -61,6 +67,7 @@ export default class WorkExperience extends Component {
 
     copy.splice(index, 1);
     this.setState({ workExperiences: copy });
+    this.props.deleteAWorkExperience(id);
   };
 
   render() {

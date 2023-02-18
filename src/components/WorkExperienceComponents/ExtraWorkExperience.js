@@ -13,7 +13,7 @@ export default class ExtraWorkExperience extends Component {
     );
     console.log(this.props.workExperienceDetails);
     this.state = {
-      bulletPoint: [{ key: firstKey, bullet: "First bullet Point" }],
+      bulletPoint: this.props.workExperienceDetails[index].bulletPoint,
       workTitle: this.props.workExperienceDetails[index].workTitle,
       startDate: this.props.workExperienceDetails[index].startDate,
       finishDate: this.props.workExperienceDetails[index].finishDate,
@@ -39,48 +39,67 @@ export default class ExtraWorkExperience extends Component {
   };
 
   updateBullet = (e) => {
-    console.log("target", e.target.value);
+    this.props.editBulletPoint(
+      this.props.id,
+      e.target.dataset.key,
+      e.target.value,
+      () => {
+        console.log("target", e.target.value);
 
-    // let index = 0;
-    console.log(e.target.dataset);
-    let index = this.state.bulletPoint.findIndex(
-      (element) => element.key === e.target.dataset.key
+        // let index = 0;
+        console.log(e.target.dataset);
+        let index = this.state.bulletPoint.findIndex(
+          (element) => element.key === e.target.dataset.key
+        );
+        let copy = [...this.state.bulletPoint];
+        console.log("the copy", copy);
+
+        copy.splice(index, 1, {
+          key: e.target.dataset.key,
+          bullet: e.target.value,
+        });
+        this.setState(
+          {
+            bulletPoint: copy,
+          },
+          () => {
+            console.log(
+              "the work experience state",
+              this.props.workExperienceDetails
+            );
+            console.log("the original", this.state.bulletPoint);
+          }
+        );
+      }
     );
-    let copy = [...this.state.bulletPoint];
-    console.log("the copy", copy);
-
-    copy.splice(index, 1, {
-      key: e.target.dataset.key,
-      bullet: e.target.value,
-    });
-    this.setState({
-      bulletPoint: copy,
-    });
-    console.log("the state", this.state.bulletPoint);
   };
 
   //   handleDelete = () => {};
 
   handleAddBullet = () => {
-    let copy = [...this.state.bulletPoint];
+    console.log("the original", this.state.bulletPoint);
 
-    copy.push({ key: uniqid(), bullet: "" });
-    this.setState({ bulletPoint: copy });
-  };
+    // below is setting with master state
 
-  addExtraEducationCMPNT = () => {
-    let aKey = uniqid();
-    this.setState({
-      educations: [...this.state.educations].concat(
-        <WorkExperienceBulletPoints
-          handleDelete={this.handleDelete}
-          id={aKey}
-          key={aKey}
-        ></WorkExperienceBulletPoints>
-      ),
+    this.props.setNewBulletPoint(this.props.id, () => {
+      // let copy = [...this.state.bulletPoint];
+
+      setTimeout(() => {
+        let copy = JSON.parse(JSON.stringify([...this.state.bulletPoint]));
+        console.log("here!!!", [...this.state.bulletPoint]);
+        console.log("here!!!", copy);
+
+        console.log("AAA", this.props.workExperienceDetails);
+        copy.push({
+          // key: this.props.workExperienceDetails.at(-1).bulletPoint.at(-1).key,
+          key: uniqid(),
+          bullet: "",
+        });
+        console.log("here!!!", copy);
+
+        this.setState({ bulletPoint: copy });
+      }, 500);
     });
-
-    // console.log(this.state.educations);
   };
 
   handleChange = (field, event) => {
@@ -90,17 +109,19 @@ export default class ExtraWorkExperience extends Component {
   };
 
   handleDelete = (id) => {
-    console.log(id);
+    this.props.deleteBulletPoint(this.props.id, id, () => {
+      let index = this.state.bulletPoint.findIndex(
+        (anItem) => anItem.key === id
+      );
+      console.log(index);
 
-    let index = this.state.bulletPoint.findIndex((anItem) => anItem.key === id);
-    console.log(index);
+      let copy = [...this.state.bulletPoint];
 
-    let copy = [...this.state.bulletPoint];
+      copy.splice(index, 1);
 
-    copy.splice(index, 1);
-
-    this.setState({
-      bulletPoint: copy,
+      this.setState({
+        bulletPoint: copy,
+      });
     });
   };
 

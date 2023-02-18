@@ -33,7 +33,7 @@ class App extends Component {
           startDate: "2021-01-12",
           finishDate: "2021-12-12",
           bulletPoint: [
-            { key: uniqid(), title: "did this for this amount of time" },
+            { key: uniqid(), bullet: "did this for this amount of time" },
           ],
         },
       ],
@@ -169,6 +169,13 @@ class App extends Component {
     this.setState({ workExperience: copy }, callback);
   };
 
+  deleteAWorkExperience = (id) => {
+    this.setState((prevState) => {
+      return {
+        workExperience: prevState.workExperience.filter((el) => el.key !== id),
+      };
+    });
+  };
   setNewEducationState = (callback) => {
     let copy = [...this.state.education];
 
@@ -201,70 +208,73 @@ class App extends Component {
     });
   };
 
-  setNewBulletPoint = (parentID) => {
-    let copy = [...this.state.masterDetails.workExperience];
+  setNewBulletPoint = (parentID, callback) => {
+    let index = this.state.workExperience.findIndex(
+      (el) => el.key === parentID
+    );
+    let copy = JSON.parse(JSON.stringify([...this.state.workExperience]));
 
-    copy.bulletPoint.push({
+    copy[index].bulletPoint.push({
       key: uniqid(),
-      title: "",
+      bullet: "",
     });
 
-    this.setState({
-      masterDetails: {
-        workExperience: copy,
-      },
-    });
+    this.setState({ workExperience: copy }, callback);
+    // console.log("the supposedly new state", copy);
+    setTimeout(
+      () => console.log("the supposedly new state", this.state.workExperience),
+      0
+    );
   };
 
-  editBulletPoint = (parentID, bulletID, newValue) => {
+  editBulletPoint = (parentID, bulletID, newValue, callback) => {
     let parentIndex = this.findindexInlistByID(
-      this.state.masterDetails.workExperience,
+      this.state.workExperience,
       parentID
     );
 
     let bulletIndex = this.findindexInlistByID(
-      this.state.masterDetails.workExperience[parentIndex].bulletPoint,
+      this.state.workExperience[parentIndex].bulletPoint,
       bulletID
     );
 
     // let bulletKey= this.state.masterDetails.workExperience[parentIndex].bulletPoint[bulletIndex]
 
-    let copy = [...this.state.masterDetails.workExperience];
+    let copy = [...this.state.workExperience];
 
     copy[parentIndex].bulletPoint.splice(bulletIndex, 1, {
       key: bulletID,
       title: newValue,
     });
 
-    this.setState({
-      masterDetails: {
-        workExperience: copy,
+    this.setState(
+      {
+        masterDetails: {
+          workExperience: copy,
+        },
       },
-    });
+      callback
+    );
   };
 
-  deleteBulletPoint = (parentID, bulletID) => {
+  deleteBulletPoint = (parentID, bulletID, callback) => {
     let parentIndex = this.findindexInlistByID(
-      this.state.masterDetails.workExperience,
+      this.state.workExperience,
       parentID
     );
 
     let bulletIndex = this.findindexInlistByID(
-      this.state.masterDetails.workExperience[parentIndex].bulletPoint,
+      this.state.workExperience[parentIndex].bulletPoint,
       bulletID
     );
 
     // let bulletKey= this.state.masterDetails.workExperience[parentIndex].bulletPoint[bulletIndex]
 
-    let copy = [...this.state.masterDetails.workExperience];
+    let copy = [...this.state.workExperience];
 
     copy[parentIndex].bulletPoint.splice(bulletIndex, 1);
 
-    this.setState({
-      masterDetails: {
-        workExperience: copy,
-      },
-    });
+    this.setState({ workExperience: copy }, callback);
   };
 
   render() {
@@ -280,6 +290,7 @@ class App extends Component {
           changePersonalDetailsState={this.changePersonalDetailsState}
           changeEducationState={this.changeEducationState}
           changeWorkExperienceState={this.changeWorkExperienceState}
+          deleteAWorkExperience={this.deleteAWorkExperience}
           workExperience={this.state.workExperience}
           setNewEducationState={this.setNewEducationState}
           setNewWorkState={this.setNewWorkState}
