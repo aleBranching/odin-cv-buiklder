@@ -84,20 +84,29 @@ export default class ExtraWorkExperience extends Component {
     this.props.setNewBulletPoint(this.props.id, () => {
       // let copy = [...this.state.bulletPoint];
 
+      // setTimeout(() => {
+      let copy = JSON.parse(JSON.stringify([...this.state.bulletPoint]));
+      console.log("here!!!", [...this.state.bulletPoint]);
+      console.log("here!!!", copy);
+
+      console.log("AAA", this.props.workExperienceDetails);
+      copy.push({
+        // key: this.props.workExperienceDetails.at(-1).bulletPoint.at(-1).key,
+        key: uniqid(),
+        bullet: "",
+      });
+      console.log("here!!!", copy);
+
+      this.setState({ bulletPoint: copy }, () => {
+        console.log(
+          "the supposedly new internal props state",
+          this.props.workExperienceDetails
+        );
+      });
+      // }, );
+
       setTimeout(() => {
-        let copy = JSON.parse(JSON.stringify([...this.state.bulletPoint]));
-        console.log("here!!!", [...this.state.bulletPoint]);
-        console.log("here!!!", copy);
-
-        console.log("AAA", this.props.workExperienceDetails);
-        copy.push({
-          // key: this.props.workExperienceDetails.at(-1).bulletPoint.at(-1).key,
-          key: uniqid(),
-          bullet: "",
-        });
-        console.log("here!!!", copy);
-
-        this.setState({ bulletPoint: copy });
+        console.log("the prop after timeout", this.props.workExperienceDetails);
       }, 500);
     });
   };

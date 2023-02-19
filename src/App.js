@@ -222,7 +222,11 @@ class App extends Component {
     this.setState({ workExperience: copy }, callback);
     // console.log("the supposedly new state", copy);
     setTimeout(
-      () => console.log("the supposedly new state", this.state.workExperience),
+      () =>
+        console.log(
+          "the supposedly new state",
+          this.state.workExperience[index].bulletPoint
+        ),
       0
     );
   };
@@ -244,7 +248,7 @@ class App extends Component {
 
     copy[parentIndex].bulletPoint.splice(bulletIndex, 1, {
       key: bulletID,
-      title: newValue,
+      bullet: newValue,
     });
 
     this.setState(
