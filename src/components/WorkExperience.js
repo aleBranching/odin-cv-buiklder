@@ -8,52 +8,41 @@ export default class WorkExperience extends Component {
     let firstKey = this.props.workExperienceDetails[0].key;
 
     this.state = {
-      workExperiences: [
+      workExperiences: [firstKey],
+    };
+  }
+
+  renderList = (list) => {
+    return list.map((element) => {
+      return (
         <ExtraWorkExperience
-          key={firstKey}
-          id={firstKey}
+          key={element}
+          id={element}
           workExperienceDetails={this.props.workExperienceDetails}
           changeWorkExperienceState={this.props.changeWorkExperienceState}
           handleDelete={this.handleDelete}
           setNewBulletPoint={this.props.setNewBulletPoint}
           editBulletPoint={this.props.editBulletPoint}
           deleteBulletPoint={this.deleteBulletPoint}
-        ></ExtraWorkExperience>,
-      ],
-    };
-  }
-
-  handleAddExperience = () => {
-    let copy = [...this.state.workExperiences];
-    // let id = uniqid();
-    this.props.setNewWorkExperienceState(() => {
-      let id =
-        this.props.workExperienceDetails[
-          this.props.workExperienceDetails.length - 1
-        ].key;
-      console.log(
-        "the work experience prop",
-        this.props.workExperienceDetails[
-          this.props.workExperienceDetails.length - 1
-        ]
-      );
-      console.log("the id", id);
-      copy.push(
-        <ExtraWorkExperience
-          key={id}
-          id={id}
-          changeWorkExperienceState={this.props.changeWorkExperienceState}
-          workExperienceDetails={this.props.workExperienceDetails}
-          handleDelete={this.handleDelete}
-          setNewBulletPoint={this.props.setNewBulletPoint}
-          editBulletPoint={this.props.editBulletPoint}
-          deleteBulletPoint={this.props.deleteBulletPoint}
         ></ExtraWorkExperience>
       );
-      this.setState({
-        workExperiences: copy,
-      });
     });
+  };
+
+  handleAddExperience = () => {
+    // let copy = JSON.parse(JSON.stringify(this.state.workExperiences));
+    let copy = [...this.state.workExperiences];
+    // let id = uniqid();
+    let id = uniqid();
+    copy.push(id);
+
+    console.log("the copy", copy);
+    let add = () => {
+      console.log("the work experience prop", this.props.workExperienceDetails);
+      console.log("the id", id);
+      this.setState({ workExperiences: copy }, () => console.log("check"));
+    };
+    this.props.setNewWorkExperienceState(add, id);
   };
 
   handleDelete = (id) => {
@@ -74,7 +63,7 @@ export default class WorkExperience extends Component {
     return (
       <React.Fragment>
         <h3>Work Experience</h3>
-        {this.state.workExperiences}
+        {this.renderList(this.state.workExperiences)}
         <button onClick={this.handleAddExperience}>Add Experience</button>
       </React.Fragment>
     );

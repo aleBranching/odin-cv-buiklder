@@ -11,6 +11,7 @@ export default class ExtraWorkExperience extends Component {
     let index = this.props.workExperienceDetails.findIndex(
       (element) => element.key === this.props.id
     );
+    console.log("it has been executed");
     console.log(this.props.workExperienceDetails);
     this.state = {
       bulletPoint: this.props.workExperienceDetails[index].bulletPoint,
@@ -19,6 +20,50 @@ export default class ExtraWorkExperience extends Component {
       finishDate: this.props.workExperienceDetails[index].finishDate,
     };
   }
+
+  // static getDerivedStateFromProps(props, state) {
+  //   let index = props.workExperienceDetails.findIndex(
+  //     (element) => element.key === props.id
+  //   );
+
+  //   if (props.workExperienceDetails[index].bulletPoint !== state.bulletPoint) {
+  //     return {
+  //       bulletPoint: props.workExperienceDetails[index].bulletPoint,
+  //     };
+  //   }
+  //   return null;
+  // }
+
+  // componentWillReceiveProps(nextProps) {
+  //   // Any time props.email changes, update state.
+  //   if (nextProps.bulletPoint !== this.props.bulletPoint) {
+  //     this.setState({
+  //       bulletPoint: nextProps.bulletPoint,
+  //     });
+  //   }
+  // }
+
+  // componentDidUpdate(prevProps, prevState, snapshot) {
+  //   console.log("---------------");
+  //   console.log(" updated inside Education");
+  //   console.log("The prev props here", prevProps);
+
+  //   console.log("The prev state here", prevState);
+  //   console.log("the snapshot", snapshot);
+
+  //   console.log("-----------");
+  // }
+
+  index = this.props.workExperienceDetails.findIndex(
+    (element) => element.key === this.props.id
+  );
+  // componentDidUpdate(prevProps) {
+  //   console.log("THE PREV PROP", prevProps);
+  //   console.log("THE CURRENT PROP", this.props);
+  //   if (prevProps.bulletPoint !== this.props.bulletPoint) {
+  //     this.setState({ bulletPoint: this.props.bulletPoint });
+  //   }
+  // }
 
   renderList = () => {
     return this.state.bulletPoint.map((element) => (
@@ -81,34 +126,42 @@ export default class ExtraWorkExperience extends Component {
 
     // below is setting with master state
 
-    this.props.setNewBulletPoint(this.props.id, () => {
-      // let copy = [...this.state.bulletPoint];
+    // this.props.setNewBulletPoint(this.props.id, () => {
+    // let copy = [...this.state.bulletPoint];
 
-      // setTimeout(() => {
-      let copy = JSON.parse(JSON.stringify([...this.state.bulletPoint]));
-      console.log("here!!!", [...this.state.bulletPoint]);
-      console.log("here!!!", copy);
+    // setTimeout(() => {
+    let copy = JSON.parse(JSON.stringify([...this.state.bulletPoint]));
+    // console.log("here!!!", [...this.state.bulletPoint]);
+    // console.log("here!!!", copy);
 
-      console.log("AAA", this.props.workExperienceDetails);
-      copy.push({
-        // key: this.props.workExperienceDetails.at(-1).bulletPoint.at(-1).key,
-        key: uniqid(),
-        bullet: "",
-      });
-      console.log("here!!!", copy);
+    // console.log("AAA", this.props.workExperienceDetails);
+    let newKey = uniqid();
+    copy.push({
+      // key: this.props.workExperienceDetails.at(-1).bulletPoint.at(-1).key,
+      key: newKey,
+      bullet: "",
+    });
+    // console.log("here!!!", copy);
 
-      this.setState({ bulletPoint: copy }, () => {
+    this.setState({ bulletPoint: copy }, () => {
+      console.log(
+        "FINAL the supposedly new internal of each work experience bulletpoints",
+        this.state.bulletPoint
+      );
+      this.props.setNewBulletPoint(this.props.id, newKey, () => {
         console.log(
-          "the supposedly new internal props state",
-          this.props.workExperienceDetails
+          "FINAL PROP CHECK",
+          this.props.workExperienceDetails[0].bulletPoint
         );
       });
-      // }, );
-
-      setTimeout(() => {
-        console.log("the prop after timeout", this.props.workExperienceDetails);
-      }, 500);
     });
+
+    // }, );
+
+    // setTimeout(() => {
+    //   console.log("the prop after timeout", this.props.workExperienceDetails);
+    // }, 500);
+    // });
   };
 
   handleChange = (field, event) => {

@@ -156,17 +156,21 @@ class App extends Component {
       () => console.log("checking the state", this.state.workExperience)
     );
   };
-  setNewWorkExperienceState = (callback) => {
+  setNewWorkExperienceState = (callback, newKey) => {
+    console.log("first line");
     let copy = JSON.parse(JSON.stringify(this.state.workExperience));
+    if (copy) {
+      console.log("second line");
+    }
     copy.push({
-      key: uniqid(),
+      key: newKey,
       workTitle: "",
       startDate: "",
       finishDate: "",
-      bulletPoint: [{ key: uniqid(), title: "" }],
+      bulletPoint: [{ key: newKey, title: "" }],
     });
-    console.log("the copy", copy);
-    this.setState({ workExperience: copy }, callback);
+    // console.log("the copy", copy);
+    this.setState({ workExperience: copy }, () => callback());
   };
 
   deleteAWorkExperience = (id) => {
@@ -208,29 +212,27 @@ class App extends Component {
     });
   };
 
-  setNewBulletPoint = (parentID, callback) => {
+  setNewBulletPoint = (parentID, newKey, callback) => {
     let index = this.state.workExperience.findIndex(
       (el) => el.key === parentID
     );
     let copy = JSON.parse(JSON.stringify([...this.state.workExperience]));
 
     copy[index].bulletPoint.push({
-      key: uniqid(),
+      key: newKey,
       bullet: "",
     });
 
-    this.setState({ workExperience: copy }, callback);
+    this.setState({ workExperience: copy });
     // console.log("the supposedly new state", copy);
-    setTimeout(
-      () =>
-        console.log(
-          "the supposedly new state",
-          this.state.workExperience[index].bulletPoint
-        ),
-      0
-    );
+    setTimeout(() => {
+      console.log(
+        "FINAL the supposedly new state of bulletPoints",
+        this.state.workExperience[index].bulletPoint
+      );
+      callback();
+    }, 300);
   };
-
   editBulletPoint = (parentID, bulletID, newValue, callback) => {
     let parentIndex = this.findindexInlistByID(
       this.state.workExperience,
