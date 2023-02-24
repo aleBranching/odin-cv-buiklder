@@ -40,7 +40,10 @@ export default class WorkExperience extends Component {
     let add = () => {
       console.log("the work experience prop", this.props.workExperienceDetails);
       console.log("the id", id);
-      this.setState({ workExperiences: copy }, () => console.log("check"));
+      this.setState(
+        { workExperiences: [...this.state.workExperiences].concat(id) },
+        () => console.log("check")
+      );
     };
     this.props.setNewWorkExperienceState(add, id);
   };

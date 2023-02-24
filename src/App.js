@@ -158,7 +158,7 @@ class App extends Component {
   };
   setNewWorkExperienceState = (callback, newKey) => {
     console.log("first line");
-    let copy = JSON.parse(JSON.stringify(this.state.workExperience));
+    let copy = [...this.state.workExperience];
     if (copy) {
       console.log("second line");
     }
@@ -297,7 +297,7 @@ class App extends Component {
           changeEducationState={this.changeEducationState}
           changeWorkExperienceState={this.changeWorkExperienceState}
           deleteAWorkExperience={this.deleteAWorkExperience}
-          workExperience={this.state.workExperience}
+          workExperienceDetails={this.state.workExperience}
           setNewEducationState={this.setNewEducationState}
           setNewWorkState={this.setNewWorkState}
           setNewBulletPoint={this.setNewBulletPoint}
